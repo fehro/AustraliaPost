@@ -30,12 +30,12 @@ namespace AustraliaPost
         #region Implemented IConnector Members
 
         /// <summary>
-        /// Perform a search with the provided query and optional state.
+        /// Perform a search with the provided query and optional state and exclude postboxes flag.
         /// </summary>
-        public IEnumerable<Locality> Search(string query, string state = null)
+        public IEnumerable<Locality> Search(string query, string state = null, bool? excludePostboxes = null)
         {
             //Build the search url.
-            var url = BuildSearchUrl(query, state);
+            var url = BuildSearchUrl(query, state, excludePostboxes);
 
             //Get the response from the api.
             var response = GetFromUrl(url);
@@ -94,13 +94,14 @@ namespace AustraliaPost
         /// <summary>
         /// Build the search url with the provided values.
         /// </summary>
-        protected string BuildSearchUrl(string searchQuery, string state)
+        protected string BuildSearchUrl(string searchQuery, string state, bool? excludePostboxes)
         {
             var values = new List<KeyValuePair<string, string>>();
 
             //Build the url key value collection.
             values.Add(new KeyValuePair<string, string>("q", HttpUtility.UrlEncode(searchQuery)));
             values.Add(new KeyValuePair<string, string>("state", state));
+            values.Add(new KeyValuePair<string, string>("excludePostBoxFlag", excludePostboxes.ToString().ToLower()));
 
             return AustraliaPostApiSearchUrl + string.Join("&", values.Select(x => x.Key + "=" + x.Value));
         }

@@ -5,6 +5,6 @@ namespace AustraliaPost.Contracts
 {
     public interface IConnector
     {
-        IEnumerable<Locality> Search(string query, string postcode = null);
+        IEnumerable<Locality> Search(string query, string postcode = null, bool? excludePostboxes = null);
     }
 }
